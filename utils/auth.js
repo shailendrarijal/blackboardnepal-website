@@ -26,12 +26,6 @@ const addUser = (props) => {
     });
 }
 
-// function verifyUser() {
-//     firebase.auth().currentUser.sendEmailVerification()
-//         .then(response => {return response}
-//     ).catch(error => {return error})
-// }
-
 export const useAuth = () => {
     return useContext(authContext);
 }
@@ -42,23 +36,22 @@ function useProvideAuth() {
     // const newUser = useUser();
 
     const signin = (email, password) => {
-
         return firebase.auth().signInWithEmailAndPassword(email, password)
             .then((response) => {
-                setUser(response.user)
-                    return response.user;
+                setUser(response.user);
+                return response.user;
                 // if (response.user.emailVerified) {
                 //     setUser(response.user)
                 //     return response.user;
-                // } else {
+                // } else if(!response.user.emailVerified) {
                 //     setUser(false);
-                //     return "Please verify your email address";
+                //     return false;
                 // }
             });
     }
 
-    // const verifyEmail = (email) => {
-    //     return firebase.auth().currentUser.sendEmailVerification(email)
+    // const verifyEmail = () => {
+    //     return firebase.auth().currentUser.sendEmailVerification()
     //         .then(response => { return response }).catch(error => { return error });
     // }
 
@@ -68,7 +61,7 @@ function useProvideAuth() {
             .then((response) => {
                 setUser(response.user);
                 addUser(response.user);
-                // verifyUser();
+                verifyEmail(email);
                 return response.user;
             });
     }
@@ -100,7 +93,7 @@ function useProvideAuth() {
     }
 
     const currentUser = () => {
-        return firebase.auth().currentUser;
+        return firebase.auth().getCurrentUser();
     }
 
     useEffect(() => {

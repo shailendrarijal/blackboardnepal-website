@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import EnglishWordsApp from '../components/EnglishWords/EnglishWordsApp';
 import EnglishWordsForm from '../components/EnglishWords/EnglishWordsForm';
 import { useAuth } from '../utils/auth';
-import Firebase from 'firebase';
+import { useUser } from '.././utils/users';
+
 
 import Button from 'react-bootstrap/Button';
 import Head from 'next/head';
@@ -10,25 +11,25 @@ import Head from 'next/head';
 export default function EnglishWords() {
 
  const auth = useAuth();
+  const user = useUser();
 
   const userId = auth.userId;
-  const isLoggedIn = auth.userId ? true : false;
-  const [role, setRole] = useState('');
-
-  function getRole() {
-    Firebase.firestore().collection('users').where('userId', '==', userId).get().then(
-         function(querySnapshot) {
-          querySnapshot.forEach(function(doc) {
-            setRole(doc.data().role)
-          });
-          }
-    );
-  };
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isContributor, setIsContributor] = useState(false);
 
   useEffect(() => {
-    if (!isLoggedIn) return;
-    getRole();
-  }, [isLoggedIn]);
+        if (!auth.userId) return;
+        if (auth.userId) {
+            setIsLoggedIn(true);
+        }
+      }, [auth]);
+
+  useEffect(() => {
+    if (!auth.userId) return;
+    const userData = user.getUserData();
+    userData.isContributor && setIsContributor(true);
+  }, [user]);
+
 
   return(
       <div>
@@ -61,7 +62,7 @@ export default function EnglishWords() {
             <EnglishWordsApp />
         </div>
         
-       {role && role !== '' && role === 'contributor' && (<EnglishWordsForm />)}  
+        {isContributor && (<EnglishWordsForm />)}       
        
         <style jsx>{`
         `}</style>

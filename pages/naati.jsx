@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import NaatiApp from '../components/NaatiAll/NaatiApp';
 import { useAuth } from '.././utils/auth';
@@ -8,12 +8,19 @@ import Button from 'react-bootstrap/Button';
 export function Naati() {
 
     const auth = useAuth();
-    const isLoggedIn = auth.userId ? true : false;
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     
     const [displayBox, setDisplayBoxes] = useState(true);
     function changeDisplay() {
         setDisplayBoxes(!displayBox);
     }
+    
+     useEffect(() => {
+        if (!auth.userId) return;
+        if (auth.userId) {
+            setIsLoggedIn(true);
+        }
+     }, [auth]);
     
     return (
         <div>

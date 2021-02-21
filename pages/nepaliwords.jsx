@@ -4,31 +4,29 @@ import NepaliWordForm from '../components/NepaliWordForm';
 import Button from 'react-bootstrap/Button';
 
 import { useAuth } from '.././utils/auth';
+import { useUser } from '.././utils/users';
+
 import Head from 'next/head';
-import Firebase from 'firebase';
 
 export default function NepaliWords() {
   const auth = useAuth();
-
+  const user = useUser();
   const userId = auth.userId;
-  const isLoggedIn = auth.userId ? true : false;
-  const [role, setRole] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isContributor, setIsContributor] = useState(false);
 
-  function getRole() {
-    Firebase.firestore().collection('users').where('userId', '==', userId).get().then(
-         function(querySnapshot) {
-          querySnapshot.forEach(function(doc) {
-            setRole(doc.data().role)
-          });
-          }
-    );
-  };
+   useEffect(() => {
+        if (!auth.userId) return;
+        if (auth.userId) {
+            setIsLoggedIn(true);
+        }
+      }, [auth]);
 
   useEffect(() => {
-    console.log("Value of isLoggedIn", isLoggedIn);
-    if (!isLoggedIn) return;
-    getRole();
-  }, [isLoggedIn]);
+    if (!auth.userId) return;
+    const userData = user.getUserData();
+    userData.isContributor && setIsContributor(true);
+  }, [user]);
 
   
     return (
@@ -61,7 +59,7 @@ export default function NepaliWords() {
         <div>        
             <NepaliWordsApp />
         </div>
-        {role && role !== '' && role === 'contributor' && (<NepaliWordForm />)}       
+        {isContributor && (<NepaliWordForm />)}       
        
         <style jsx>{`
         `}</style>

@@ -77,7 +77,5 @@ function useProvideUser() {
     return {
         getUserData,
         updateUserData,
-        // addUser,
-        isContributor,
     };
 }

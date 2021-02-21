@@ -3,8 +3,6 @@ import { useRouter } from 'next/router';
 import  Link  from 'next/link';
 import { useState } from 'react';
 import { Form, Button, Card } from 'react-bootstrap';
-import firebase from '../utils/auth/firebase';
-import 'firebase/auth';
 import Modal from 'react-bootstrap/Modal';
 
 
@@ -21,30 +19,24 @@ export default function SignIn() {
   const signIn = () => {
 
     auth.signin(email, pass)
-      .then(() => {  
-        //  validation for checking for email verification before proceeding
-        
-        // if (!firebase.auth().currentUser.emailVerified) {
-        //   reset();
-        //   setError("Please verify your email address before proceeding");
+      .then((response) => {  
+                  router.push('/home');
+        // if (response === false) {
+        //   setError("Please verify your email address by going to your email");
         //   setModalShow(true);
-        //   // setShowVerifyButton(true);
-        //   } else {
-        //      router.push('/home');
-        //   }
-
-        router.push('/home');
+        //   return;
+        // } else {
+        // }
           })
           .catch((error) => {
               setError(error.message);
           });
   };
 
-  const reset = () => {
-    setEmail('');
-    setPass('');
-  }
-  
+  // const reset = () => {
+  //   setEmail('');
+  //   setPass('');
+  // }
   
 
     return (
@@ -74,7 +66,7 @@ export default function SignIn() {
             <Link href="/reset">Forgot Password?</Link>
             <span>&nbsp;|&nbsp;</span>
             <Link href="/signup">Register</Link>
-
+            {/* <Button onClick={()=>auth.verifyEmail()}>Verify Email?</Button> */}
           </Card.Footer>
         </Card>
 

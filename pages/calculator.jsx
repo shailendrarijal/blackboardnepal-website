@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '.././utils/auth';
 import SignUpModal from '../components/Modals/SignUpModal';
 
@@ -13,8 +13,14 @@ import Button from 'react-bootstrap/Button';
 export default function Calculator() {
 
     const auth = useAuth();
-  const isLoggedIn = auth.userId ? true : false;
-  
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        if (!auth.userId) return;
+        if (auth.userId) {
+            setIsLoggedIn(true);
+        }
+      }, [auth]);  
 
   const [calculatorType, setCalculatorType] = useState("");
 
