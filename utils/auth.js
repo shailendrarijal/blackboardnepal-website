@@ -59,10 +59,10 @@ function useProvideAuth() {
 
         return firebase.auth().createUserWithEmailAndPassword(email, password)
             .then((response) => {
-                setUser(response.user);
+                setUser(false);
                 addUser(response.user);
-                verifyEmail(email);
-                return response.user;
+                // verifyEmail(email);
+                return "Success";
             });
     }
 

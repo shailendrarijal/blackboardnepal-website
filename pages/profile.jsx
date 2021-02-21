@@ -50,7 +50,6 @@ export default function Profile() {
         const { target: { name, value } } = e
         setProfileInfo({...profileInfo, [name]: value});
         setSaveButtonEnabled(true);
-        console.log(profileInfo);
     };
     
     function onSave() {

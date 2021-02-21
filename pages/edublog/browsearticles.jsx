@@ -11,9 +11,14 @@ function BrowseArticles() {
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
+        if (categories.length !== 0) return;
         setCategories(articleContext.getAllCategories());
+    }, [categories]);
+    
+    useEffect(() => {
+      if (articles.length !== 0) return;
         setArticles(articleContext.getAllArticles());
-  }, [articleContext]);
+  }, [articles]);
 
     return (
         <div>
@@ -40,10 +45,7 @@ function BrowseArticles() {
                                                 return (
                                                 <li key={article.id} className="article-display-container col-lg-4 col-md-6 col-sm-12">
                                                     <ArticleCard
-                                                        
-                                                        data={article} 
-                                                        dateCreated={article.dateCreated}
-                                                        dateUpdated={article.dateUpdated}
+                                                        data={{ ...article }} 
                                                         />
                                                 </li>
                                             )

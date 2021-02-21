@@ -21,20 +21,25 @@ export default function Navbars() {
     auth.signout();
     router.push('/');
     <SignOutModal />
+    setIsLoggedIn(false);
   }
   
   useEffect(() => {
-    if (!auth.userId) return;
+    if (!auth.userId) {
+      setIsLoggedIn(false);
+      return;
+    }
     if (auth.userId) {
       setIsLoggedIn(true);
     }
-   }, [auth]);
+   }, [auth, isLoggedIn]);
   
   useEffect(() => {
-    if (!auth.userId) return;
+    if (!isLoggedIn) return;
+    if (isLoggedIn && isContributor) return;
     const userData = userContext.getUserData();
-    setIsContributor(userData.isContributor);
-  }, [isContributor]);
+      setIsContributor(userData.isContributor);
+  }, [userContext]);
   
 
   return (

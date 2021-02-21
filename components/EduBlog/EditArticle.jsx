@@ -7,7 +7,9 @@ import { useArticle } from '../../utils/articles';
 import { Form, Button, Dropdown } from "react-bootstrap";
 import slugify from 'react-slugify';
 
-function AddArticle() {
+function EditArticle({ ...articles }) {
+
+    const selectedArticle = { ...articles }.article;
 
   const auth = useAuth();
   const userContext = useUser();
@@ -19,22 +21,21 @@ function AddArticle() {
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [isContributor, setIsContributor] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [article, setArticle] = useState({
-      body: '',
-      dateCreated: '',
-      dateUpdated: '',
-      published: false,
-      slugName: '',
-      title: '',
-      category: '',
-      subcategory: '',
-      image: [],
-      userId: '',
-      firstname: '',
-      lastname: '',
+     body: selectedArticle.body,
+    dateCreated: selectedArticle.dateCreated,
+    dateUpdated: selectedArticle.dateUpdated,
+    published: selectedArticle.published,
+    slugName: selectedArticle.slugName,
+    title: selectedArticle.title,
+    category: selectedArticle.category,
+    subcategory: selectedArticle.subcategory,
+    image: [],
+    userId: selectedArticle.userId,
+    firstname: selectedArticle.firstname,
+    lastname: selectedArticle.lastname,
   });
 
   useEffect(() => {
@@ -49,13 +50,13 @@ function AddArticle() {
     if (isLoggedIn && isContributor) return;
     const userData = userContext.getUserData();
       setIsContributor(userData.isContributor);
+      console.log("CHECKING CONTRIBUTOR STATUS",userData.isContributor);
   }, [userContext]);
-  
   
   useEffect(() => {
     if (categories.length !== 0) return;
     setCategories(articleContext.getAllCategories());
-    }, [categories]);
+    }, [articleContext]);
 
   function addArticle(published) {
         // Add a new document with a generated id.
@@ -77,19 +78,18 @@ function AddArticle() {
         return;
       }
 
-    articleContext.addArticle({
-      body: article.body,
-      dateCreated: new Date().toISOString(),
-      dateUpdated: new Date().toISOString(),
-      published: published,
-      slugName: slugify(article.title),
-      title: article.title,
-      category: article.category,
-      subcategory: article.subcategory,
-      image: [],
-      userId: userId,
-    }, published);
-
+        articleContext.editArticle({
+          body: article.body,
+          dateCreated: new Date(article.dateCreated).toISOString(),
+          dateUpdated: new Date().toISOString(),
+          published: published,
+          slugName: slugify(article.title),
+          title: article.title,
+          category: article.category,
+          subcategory: article.subcategory,
+          image: [],
+          userId: userId,
+        }, published, selectedArticle.id)
       if (published === true) alert('Article published');
       else alert('Article Saved as draft');
       router.push('/edublog/myarticles');
@@ -105,6 +105,7 @@ function AddArticle() {
     setSubCategories(props.subcategories);
   }
 
+    console.log("CHECK:::::", JSON.stringify(article));
   return (
     <div>
       <div className="buttonContainer">
@@ -116,7 +117,7 @@ function AddArticle() {
       <div className="dropdown">
           <Dropdown>
             <Dropdown.Toggle variant="success" id="dropdown-basic" size="sm" className="capitalize">
-            {article.category? article.category : "Select a Category"}
+                {article.category}
             </Dropdown.Toggle>
               <Dropdown.Menu>
                 {
@@ -133,7 +134,7 @@ function AddArticle() {
         <div className="dropdown">
           <Dropdown >
           <Dropdown.Toggle variant="success" id="dropdown-basic" size="sm" className="capitalize">
-            {article.subcategory? article.subcategory : "Select a sub category"}
+            {article.subcategory}
              </Dropdown.Toggle>
               <Dropdown.Menu>
                 {
@@ -188,5 +189,5 @@ function AddArticle() {
   )
 }
 
-export default AddArticle
+export default EditArticle
 

@@ -15,9 +15,10 @@ function Home() {
   
   const [articles, setArticles] = useState([]);
 
-   useEffect(() => {
+  useEffect(() => {
+      if (articles.length !== 0) return;
         setArticles(articleContext.getAllArticles());
-  }, [articleContext]);
+  }, [articles]);
 
       if (!isLoggedIn) return null;
     return (

@@ -85,7 +85,7 @@ function useProvideArticle() {
                     slugName: snapshot.data().slugName,
                     title: snapshot.data().title,
                     category: snapshot.data().category,
-                    subCategory: snapshot.data().subcategory,
+                    subcategory: snapshot.data().subcategory,
                     image: [],
                     userId: snapshot.data().userId,
                     firstname: snapshot.data().firstName,

@@ -1,12 +1,12 @@
-import { useState } from 'react';
 import Link from 'next/link';
 
-function ArticleCard({data, dateCreated, dateUpdated}) {
+function ArticleCard({ ...articleData }) {
+  const data = articleData.data;
   
   const article = {
     body: data.body,
-    dateCreated: dateCreated,
-    dateUpdated: dateUpdated,
+    dateCreated: data.dateCreated,
+    dateUpdated: data.dateUpdated,
     published: data.published,
     slugName: data.slugName,
     title: data.title,
@@ -14,8 +14,8 @@ function ArticleCard({data, dateCreated, dateUpdated}) {
     subcategory: data.subcategory,
     image: [],
     userId: data.userId,
-    authorFirstName: data.firstname,
-    authorLastName: data.lastname,
+    authorFirstName: data.firstName,
+    authorLastName: data.lastName,
   }
 
   function getDate(props) {
@@ -34,7 +34,7 @@ function ArticleCard({data, dateCreated, dateUpdated}) {
         
           <div className="card-body">
             <span className="float-right capitalize">{article.authorFirstName}&nbsp;{article.authorLastName }</span><br></br>
-            <span className="float-right">{getDate(dateUpdated)}</span><br></br>
+            <span className="float-right">{getDate(article.dateUpdated)}</span><br></br>
             <span className="float-right capitalize">{article.category}&nbsp;/{article.subcategory}</span><br></br>
             <p className="mt-3 text-left capitalize">{article.body.substring(0, 100)}</p>   
           </div>

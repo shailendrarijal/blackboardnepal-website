@@ -2,11 +2,8 @@ import { useState } from 'react';
 import AddArticle from '../../components/EduBlog/AddArticle';
 import Head from 'next/head';
 
-export default function NewArticle(props) {
+export default function NewArticle() {
 
-  const dummy = useState({
-    articleId:'',
-  });
     return (
       <div>
         <Head>
@@ -15,12 +12,7 @@ export default function NewArticle(props) {
             <meta name="description" content="Write an article, publish them or save as draft"/>
             <meta name="viewport" content="width=device-width, initial-scale=1"/>
         </Head>
-        {props && (
-          <AddArticle articleId={props} />
-        )}
-        {!props && (
-          <AddArticle articleId={ dummy}/>
-        )}
+        <AddArticle />
        
         <style jsx>{`
         `}</style>

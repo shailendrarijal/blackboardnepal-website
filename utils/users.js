@@ -34,10 +34,6 @@ function useProvideUser() {
 
     const [docId, setDocId] = useState('');
 
-    useEffect(() => {
-       if (!auth.userId) return;
-    }, []);
-
     const getUserData = () => {
         firebase.firestore().collection('users').where('userId', '==', userId).get().then(
             function (querySnapshot) {

@@ -1,29 +1,33 @@
 import { useState, useEffect } from "react";
 
 import { useAuth } from '../../utils/auth';
+import { useUser } from '../../utils/users';
 import { useArticle } from '../../utils/articles';
 import { useRouter } from 'next/router';
 
-import Firebase from 'firebase';
 import Table from 'react-bootstrap/Table';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab'
 import Button from 'react-bootstrap/Button';
-import NewArticle from "./newarticle";
 
 import Head from 'next/head';
+import EditArticle from "../../components/EduBlog/EditArticle";
 
 function MyArticles() {
 
  
      const auth = useAuth();
     const userId = auth.userId;
+      const userContext = useUser();
+
     const articleContext = useArticle();
 
       const router = useRouter()
     const [renderArticle, setRenderArticle] = useState(false);
     const [selectedArticle, setSelectedArticle] = useState({});
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+      const [isContributor, setIsContributor] = useState(false);
+
 
     const [articles, setArticles] = useState([]);
 
@@ -32,11 +36,19 @@ function MyArticles() {
         if (auth.userId) {
             setIsLoggedIn(true);
         }
-     }, [auth]);
+        }, [auth]);
+        
+        useEffect(() => {
+        if (!isLoggedIn) return;
+        if (isLoggedIn && isContributor) return;
+        const userData = userContext.getUserData();
+        setIsContributor(userData.isContributor);
+        }, [userContext]);
     
     useEffect(() => {
+        if (articles.length !== 0) return;
         setArticles(articleContext.getMyArticles());
-    }, [articleContext]);
+    }, [articles]);
 
     const renderEditArticle = (props) => {
         setRenderArticle(true);
@@ -57,7 +69,7 @@ function MyArticles() {
                 <meta name="viewport" content="width=device-width, initial-scale=1"/>
             </Head>
             {renderArticle && (
-                <NewArticle data={selectedArticle.id} />
+                <EditArticle article={{...selectedArticle}} />
             )}
             {!renderArticle && (
                 <div>
