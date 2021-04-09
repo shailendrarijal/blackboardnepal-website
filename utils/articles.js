@@ -51,7 +51,7 @@ function useProvideArticle() {
     
 
     const getAllArticles = () => {
-        Firebase.firestore().collection("articles").onSnapshot((snapshot)=> {
+        Firebase.firestore().collection("articles").where("published", "==", true).onSnapshot((snapshot)=> {
           const articles = snapshot.docs.map((doc) => ({
             id: doc.id,
               ...doc.data()

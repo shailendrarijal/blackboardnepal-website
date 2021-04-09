@@ -13,6 +13,11 @@ import Button from 'react-bootstrap/Button';
 import Head from 'next/head';
 import EditArticle from "../../components/EduBlog/EditArticle";
 
+import format from 'dateformat';
+
+import parse from 'html-react-parser';
+
+
 function MyArticles() {
 
  
@@ -48,7 +53,7 @@ function MyArticles() {
     useEffect(() => {
         if (articles.length !== 0) return;
         setArticles(articleContext.getMyArticles());
-    }, [articles]);
+    }, [articleContext]);
 
     const renderEditArticle = (props) => {
         setRenderArticle(true);
@@ -57,7 +62,10 @@ function MyArticles() {
 
     const deleteArticle = (props) => {
         articleContext.deleteArticle(props);
-        getMyArticles();
+    }
+
+    function parseHTML(props) {
+        return parse(props);
     }
 
     return (
@@ -96,9 +104,9 @@ function MyArticles() {
                                                 return (
                                                     <tr key={article.id}>
                                                         <td className="table-header-title">{article.title}</td>
-                                                        <td className="table-header-article">{article.body.substring(50)}</td>
-                                                        <td className="table-header-created">{article.dateCreated}</td>
-                                                        <td className="table-header-updated">{article.dateUpdated}</td>
+                                                        <td className="table-header-article">{parseHTML(article.body.substring(0,50))}</td>
+                                                        <td className="table-header-created">{format(article.dateCreated, 'ddd mmm dd yyyy HH:MM:ss' )}</td>
+                                                        <td className="table-header-updated">{format(article.dateUpdated,'ddd mmm dd yyyy HH:MM:ss' )}</td>
                                                         <td className="table-header-button">
                                                             <Button variant="outline-success" block onClick={() => renderEditArticle(article)}>Edit</Button>
                                                             <Button variant="outline-danger" block onClick={() => deleteArticle(article.id)}>Delete</Button>
@@ -126,9 +134,9 @@ function MyArticles() {
                                                 return (
                                                     <tr key={article.id}>
                                                         <td className="table-header-title">{article.title}</td>
-                                                        <td className="table-header-article">{article.body.substring(50)}</td>
-                                                        <td className="table-header-created">{article.dateCreated}</td>
-                                                        <td className="table-header-updated">{article.dateUpdated}</td>
+                                                        <td className="table-header-article">{parse(article.body.substring(0,50))}</td>
+                                                        <td className="table-header-created">{format(article.dateCreated, 'ddd mmm dd yyyy HH:MM:ss' )}</td>
+                                                        <td className="table-header-updated">{format(article.dateUpdated,'ddd mmm dd yyyy HH:MM:ss' )}</td>
                                                         <td className="table-header-button">
                                                             <Button variant="outline-danger" block onClick={() => deleteArticle(article.id)}>Delete</Button>
                                                         </td>

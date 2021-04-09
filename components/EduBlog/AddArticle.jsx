@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from 'react';
+
+const ReactQuill = typeof window === 'object' ? require('react-quill') : () => false;
+import 'react-quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.bubble.css';
+import 'react-quill/dist/quill.core.css';
+
 import { useRouter } from 'next/router';
 import { useAuth } from '../../utils/auth';
 import { useUser } from '../../utils/users';
 
 import { useArticle } from '../../utils/articles';
-import { Form, Button, Dropdown } from "react-bootstrap";
+import { Row, Col, Form, Button, Dropdown, InputGroup } from "react-bootstrap";
 import slugify from 'react-slugify';
+
+import format from 'dateformat';
 
 function AddArticle() {
 
@@ -17,10 +25,26 @@ function AddArticle() {
 
   const router = useRouter();
   const [categories, setCategories] = useState([]);
-  const [subCategories, setSubCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState('');
   const [isContributor, setIsContributor] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  const modules = {
+    toolbar: [
+      [{ 'header': [1, 2, false] }],
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+      ['link'],
+      ['clean']
+    ],
+  };
+ 
+  const formats = [
+    'header',
+    'bold', 'italic', 'underline', 'strike', 'blockquote',
+    'list', 'bullet', 'indent',
+    'link',
+  ];
 
   const [article, setArticle] = useState({
       body: '',
@@ -36,6 +60,8 @@ function AddArticle() {
       firstname: '',
       lastname: '',
   });
+
+  const now = format().now;
 
   useEffect(() => {
     if (!auth.userId) return;
@@ -55,7 +81,7 @@ function AddArticle() {
   useEffect(() => {
     if (categories.length !== 0) return;
     setCategories(articleContext.getAllCategories());
-    }, [categories]);
+    }, [articleContext]);
 
   function addArticle(published) {
         // Add a new document with a generated id.
@@ -76,13 +102,13 @@ function AddArticle() {
         alert('Missing subcategory');
         return;
       }
-
+    
     articleContext.addArticle({
       body: article.body,
-      dateCreated: new Date().toISOString(),
-      dateUpdated: new Date().toISOString(),
+      dateCreated: format(now, "isoDateTime"),
+      dateUpdated: format(now, "isoDateTime"),
       published: published,
-      slugName: slugify(article.title),
+      slugName: slugify(`${article.category}${article.subcategory}${article.title}`),
       title: article.title,
       category: article.category,
       subcategory: article.subcategory,
@@ -102,7 +128,7 @@ function AddArticle() {
 
   function onSelectCategory(props) {
     setArticle({ ...article, category: props.name });
-    setSubCategories(props.subcategories);
+    // setSubCategories(props.subcategories);
   }
 
   return (
@@ -114,8 +140,11 @@ function AddArticle() {
         
       </div>
       <div className="dropdown">
+        <InputGroup>
+          <Row>
+            <Col >
           <Dropdown>
-            <Dropdown.Toggle variant="success" id="dropdown-basic" size="sm" className="capitalize">
+            <Dropdown.Toggle variant="outline-success" id="dropdown-basic" size="sm" className="capitalize">
             {article.category? article.category : "Select a Category"}
             </Dropdown.Toggle>
               <Dropdown.Menu>
@@ -127,12 +156,19 @@ function AddArticle() {
                   })
                 }
               </Dropdown.Menu>
-          </Dropdown>
+              </Dropdown>
+            </Col>
+            <Col>
+        <Form.Control size="sm" type="text" placeholder="Enter sub category" disabled={article.category === ''} name="subcategory" value={article.subcategory} onChange={(e)=>onInputchange(e)} autoComplete="off" required/>
+              </Col>
+                </Row>
+      </InputGroup>
         </div>
             
-        <div className="dropdown">
+
+        {/* <div className="dropdown">
           <Dropdown >
-          <Dropdown.Toggle variant="success" id="dropdown-basic" size="sm" className="capitalize">
+          <Dropdown.Toggle variant="outline-success" id="dropdown-basic" size="sm" className="capitalize">
             {article.subcategory? article.subcategory : "Select a sub category"}
              </Dropdown.Toggle>
               <Dropdown.Menu>
@@ -145,7 +181,7 @@ function AddArticle() {
                 }
             </Dropdown.Menu>
           </Dropdown>
-      </div>
+      </div> */}
       
       <Form.Group controlId="title" className="title">
           <Form.Control size="lg" type="text" placeholder="Enter title" name="title" value={article.title} onChange={(e)=>onInputchange(e)} autoComplete="off" required/>
@@ -153,8 +189,15 @@ function AddArticle() {
 
         
     
-       <Form.Group controlId="body">
-          <Form.Control as="textarea" rows={15 } name="body" placeholder="Write your article" value={article.body} onChange={(e)=>onInputchange(e)} autoComplete="off" required/>
+      <Form.Group controlId="body">
+        <ReactQuill value={article.body}
+          className="editorContainer"
+            onChange={(e) => setArticle({...article, body:e})}
+          theme="snow"
+          modules={modules}
+          formats={formats}
+          placeholder="Start writing your article ..."
+          />
         </Form.Group>
  
       
@@ -174,15 +217,12 @@ function AddArticle() {
           float: right;
           margin: 1rem 0 1rem 1rem;
         }
-        .dropdown{
+       .dropdown{
           margin: 0 1rem 1rem 0;
           float: left;
         }
-        {/* .title{
-          width: 30rem;
-        } */}
+        
       `}</style>
-
     </div>
 
   )

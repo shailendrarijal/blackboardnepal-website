@@ -55,7 +55,7 @@ function App({ Component, pageProps }) {
           </ProvideArticle>
         </ProvideUser>
       </ProvideAuth>
-
+      
       <style jsx>{`
         
       `}</style>

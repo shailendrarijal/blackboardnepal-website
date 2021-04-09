@@ -14,8 +14,8 @@ export function ProvideAuth({ children }) {
 const addUser = (props) => {
     firebase.firestore().collection("users").add({
         country: '',
-        firstName: '',
-        lastName: '',
+        firstName: 'firstname',
+        lastName: 'lastname',
         email: props.email,
         userId: props.uid,
         username: '',

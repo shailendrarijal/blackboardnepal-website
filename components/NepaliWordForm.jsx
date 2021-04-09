@@ -92,28 +92,26 @@ function NepaliWordForm() {
                 </Dropdown>
 
                 <Form.Group controlId="englishWord">
-                    <Form.Label>English Word</Form.Label>
+                    {/* <Form.Label>English Word</Form.Label> */}
                     <Form.Control type="text" placeholder="Enter English Word" value={englishWord} onInput={e => setEnglishWord(e.target.value)}/>
                 </Form.Group>
                 <Form.Group controlId="nepaliWord">
-                    <Form.Label>Nepali Word</Form.Label>
+                    {/* <Form.Label>Nepali Word</Form.Label> */}
                     <Form.Control type="text" placeholder="Enter Nepali Word" value={ nepaliWord} onInput={e => setNepaliWord(e.target.value)}/>
                 </Form.Group>
                 <Form.Group controlId="nepaliPronunce">
-                    <Form.Label>Nepali in Unicode</Form.Label>
+                    {/* <Form.Label>Nepali in Unicode</Form.Label> */}
                     <Form.Control type="text" placeholder="Enter Nepali Unicode" value={ nepaliWordPronunce} onInput={e => setNepaliWordPronunce(e.target.value)} />
                 </Form.Group>
                 <Form.Group controlId="wordDescription">
-                    <Form.Label>Word Description</Form.Label>
+                    {/* <Form.Label>Word Description</Form.Label> */}
                     <Form.Control type="textarea" placeholder="Enter Description" value={ wordDescription} onInput={e => setWordDescription(e.target.value)}/>
                 </Form.Group>
 
                 <Button type="submit" className="mb-2" onClick={()=>handleAddWord()}>
                     Add Word
                 </Button>
-                <Button type="submit" className="mb-2">
-                    Add More
-                </Button>
+
             </div>    
         </div>    
     );

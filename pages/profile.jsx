@@ -88,7 +88,7 @@ export default function Profile() {
     function onCancelClick() {
         setIsEditable(false);
         setSaveButtonEnabled(false);
-        getUserData();
+        user.getUserData();
     }
 
     

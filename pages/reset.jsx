@@ -1,8 +1,11 @@
 import {useAuth} from '.././utils/auth';
 import { useRouter } from 'next/router';
 import  Link  from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Form, Button, Card } from 'react-bootstrap';
+// import queryString from 'query-string';
+
+
 
 export default function Reset() {
     const auth = useAuth();
@@ -15,6 +18,23 @@ export default function Reset() {
 
     const [emailEntered, setEmailEntered] = useState(false);
 
+    useEffect(() => {
+        const queryString = window.location.search;
+
+        const urlParams = new URLSearchParams(queryString);
+
+        setResetCode(urlParams.get('oobCode'));
+        
+        if (!url.contains('oobCode')) return;
+        const code = getFromQueryString('oobCode');
+        setResetCode(code);
+        setEmailEntered(true);
+    },[])
+
+    const getFromQueryString = (key) => {
+    return queryString.parse(window.location.search)[key];
+    }
+    
   const sendResetEmail = () => {
     
         auth.sendPasswordResetEmail(email)
@@ -29,6 +49,7 @@ export default function Reset() {
     const ResetPassword = () => {
         auth.confirmPasswordReset(resetCode, pass)
             .then(() => {
+                // alert("Password changed");
                 router.push('/signin');
             })
             .catch((error) => {

@@ -65,18 +65,16 @@ export default function Navbars() {
                     <NavDropdown.Item href="/places" disabled>Places</NavDropdown.Item>
                     <NavDropdown.Item href="/cuisine" disabled>Food and Drinks</NavDropdown.Item>
                   </NavDropdown> */}
-            {isLoggedIn && isContributor && (
-              <NavDropdown title="EduBlog" id="basic-nav-dropdown">
-                  <NavDropdown.Item href="/edublog/browsearticles" >Browse Articles</NavDropdown.Item>
+            
+            <NavDropdown title="EduBlog" id="basic-nav-dropdown">
+              <NavDropdown.Item href="/edublog/browsearticles" >Browse Articles</NavDropdown.Item>
+              {isLoggedIn && isContributor && (
+                <div>
                   <NavDropdown.Item href="/edublog/myarticles" >My Articles</NavDropdown.Item>
                   <NavDropdown.Item href="/edublog/newarticle" >New Article</NavDropdown.Item>
-              </NavDropdown>
-            )}
-             {isLoggedIn && !isContributor && (
-              <NavDropdown title="EduBlog" id="basic-nav-dropdown">
-                  <NavDropdown.Item href="/edublog/browsearticles" >Browse Articles</NavDropdown.Item>
-              </NavDropdown>
-            )}
+                </div>
+              )}
+            </NavDropdown>
             <NavLink href="/about">About</NavLink>
             {isLoggedIn ?
               <NavDropdown title="Account" id="basic-nav-dropdown">

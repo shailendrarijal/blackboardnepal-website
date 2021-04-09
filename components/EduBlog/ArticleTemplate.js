@@ -1,3 +1,8 @@
+const ReactQuill = typeof window === 'object' ? require('react-quill') : () => false;
+import 'react-quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.bubble.css';
+import 'react-quill/dist/quill.core.css';
+
 function ArticleTemplate(props) {  
   const article = {
     body: props.data.body,
@@ -10,8 +15,8 @@ function ArticleTemplate(props) {
     subcategory: props.data.subcategory,
     image: [],
     userId: props.data.userId,
-    firstname: props.data.firstname,
-    lastname: props.data.lastname,
+    firstname: props.data.firstName,
+    lastname: props.data.lastName,
   };
 
   function getDate(props) {
@@ -36,12 +41,26 @@ function ArticleTemplate(props) {
                   </div>
               </div>
               <div className="article-container">
-                  <p>{ article.body}</p>
+              <ReactQuill
+                className="ql-editor"
+                  value={article.body}
+                  readOnly={true}
+                  theme={"bubble"}
+                  />
               </div>
           </div>
       
   
-        <style jsx global>{`
+      <style jsx global>{`
+        .ql-editor{
+          font-size: 18px;
+          border-right: 1px solid #ccc;
+          border-top: 1px solid #ccc;
+          border-bottom: 1px solid #ccc;
+
+          text-align: justify;
+          border-radius: 0.5rem;
+        }
         `}</style>
   
       </div>

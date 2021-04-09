@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { useAuth } from '.././utils/auth';
-import { Button } from 'react-bootstrap';
+import { Button, CarouselItem } from 'react-bootstrap';
 import ArticleCard from '.././components/EduBlog/ArticleCard';
+import Carousel from 'react-bootstrap/Carousel';
 
 import { useArticle } from '.././utils/articles';
 
@@ -18,7 +19,7 @@ function Home() {
   useEffect(() => {
       if (articles.length !== 0) return;
         setArticles(articleContext.getAllArticles());
-  }, [articles]);
+  }, [articleContext]);
 
       if (!isLoggedIn) return null;
     return (
@@ -36,27 +37,24 @@ function Home() {
         </div>
         <div className="jumbotron">
           <h2>Top Articles</h2>
-            <ul className="row">
+          <Carousel >
               {articles.slice(0,5).map((article) => {
                   return (
-                          <li key={article.id} className="article-display-container col-lg-4 col-md-6 col-sm-12">
+                          <CarouselItem key={article.id} interval={1000}>
                               <ArticleCard
                                   
                                   data={article} 
                                   dateCreated={article.dateCreated}
                                   dateUpdated={article.dateUpdated}
                                   />
-                          </li>
+                          </CarouselItem>
                       ) 
                   })}
-              </ul>
+              </Carousel>
         </div>
          
   
         <style jsx>{`
-           .article-display-container{
-             list-style: none;
-           }
         `}</style>
   
       </div>

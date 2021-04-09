@@ -10,7 +10,8 @@ export default function NewArticle() {
             <title> New Article | Blackboard Nepal</title>
             <link rel="icon" href="/favicon.ico" />
             <meta name="description" content="Write an article, publish them or save as draft"/>
-            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <meta charset="utf-8" />
         </Head>
         <AddArticle />
        

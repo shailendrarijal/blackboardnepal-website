@@ -37,3 +37,6 @@ yarn-error.log*
 .vercel
 
 ads.txt
+
+#firebase
+firebase-debug.log

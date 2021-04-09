@@ -2,23 +2,38 @@ import { useState, useEffect } from "react";
 import ArticleCard from '../../components/EduBlog/ArticleCard';
 import Head from 'next/head';
 import { useArticle } from '../../utils/articles';
+import { useAuth } from '../../utils/auth';
+
+import Carousel from "react-bootstrap/Carousel";
+import { CarouselItem, Button } from 'react-bootstrap';
 
 function BrowseArticles() {
+
+        const auth = useAuth();
 
     const articleContext = useArticle();
 
     const [articles, setArticles] = useState([]);
     const [categories, setCategories] = useState([]);
+        const [isLoggedIn, setIsLoggedIn] = useState(false);
+
 
     useEffect(() => {
         if (categories.length !== 0) return;
         setCategories(articleContext.getAllCategories());
-    }, [categories]);
+    }, [articleContext]);
     
     useEffect(() => {
       if (articles.length !== 0) return;
         setArticles(articleContext.getAllArticles());
-  }, [articles]);
+    }, [articleContext]);
+
+    useEffect(() => {
+        if (!auth.userId) return;
+        if (auth.userId) {
+            setIsLoggedIn(true);
+        }
+     }, [auth]);
 
     return (
         <div>
@@ -31,29 +46,44 @@ function BrowseArticles() {
             <div className="jumbotron">
                 <h1>EduBlog</h1>
                 <p>We have educational blogs based on various categories such as tech, health, science, management, hospitality or history</p>
-           </div>
+                {isLoggedIn ? 
+                    <div className="float-right">
+                    <Button href={'/profile'}>Profile</Button>
+                    </div>
+                    :
+                    <div className="float-right">
+                    <Button href={'/signup'} variant="success">
+                        Sign Up
+                    </Button>
+                    <span>&nbsp;&nbsp;</span>
+                        <Button href={'/signin'} variant="secondary">
+                        Sign In
+                    </Button>
+                    </div>
+                }
+            </div>
                 
             {categories.map((category) => {
                    return (
-                            <li key={category.id} className="article-display-container">
-                                <div className="category-container">
-                                    <h2 className="capitalize">{category.name}</h2>
-                                    <ul className="row">
+                       <li key={category.id} className="article-display-container jumbotron">
+                                <h2 className="capitalize">{category.name}</h2>
+                               
+                           <Carousel data-interval={1000} wrap={true}>
                                    {articles.map((article) => {
                                        if (article.category === category.name) {
                                            if (!article) setEmptyCategory(true);
                                                 return (
-                                                <li key={article.id} className="article-display-container col-lg-4 col-md-6 col-sm-12">
+                                                <CarouselItem key={article.id}>
                                                     <ArticleCard
                                                         data={{ ...article }} 
                                                         />
-                                                </li>
+                                                </CarouselItem>
                                             )
                                             }
                                             
                                         })}
-                                    </ul>
-                                </div>
+                                    </Carousel>
+                               
                             </li>
                         )
                })}
@@ -65,8 +95,8 @@ function BrowseArticles() {
                display: grid;
            }
           .category-container{
-              min-height: 400px;
               display: grid;
+              overflow-x:scroll;
           }
         `}</style>
         </div>
