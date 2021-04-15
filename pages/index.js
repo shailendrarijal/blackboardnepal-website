@@ -3,8 +3,9 @@ import styles from '../styles/Home.module.css';
 import { useAuth } from '.././utils/auth';
 import Button from 'react-bootstrap/Button';
 import services from '../lib/services';
+import wikiList from '../lib/wikiList';
+import appList from '../lib/appList';
 import Image from 'react-bootstrap/Image';
-import Carousel from '../components/Layout/Carousel';
 import Head from 'next/head';
 
 export default function Index() {
@@ -46,7 +47,7 @@ export default function Index() {
         {services.map(service => {
           return <div key={service.id} className="col-lg-4 col-md-6 col-sm-12 text-center">
               <Image src={service.imgUrl} /><br></br>
-              <button className="btn-service"><a href={service.link}>{service.name}</a></button>
+              <a href={service.link}><button className="btn-service">{service.name}</button></a>
               <h5>{service.description}</h5>
             </div>
         })}
@@ -55,10 +56,30 @@ export default function Index() {
       <hr></hr>
      
       <div className="jumbotron">
-        <h2>Inside Wiki</h2>
-        <br></br>
-        <Carousel />
+        <h2>Inside Wiki</h2><br></br>
+        <div className="row">
+        {wikiList.map(wiki => {
+          return <div key={wiki.id} className="col-lg-4 col-md-6 col-sm-12 text-center">
+              <Image src={wiki.imgUrl} /><br></br>
+              <a href={wiki.link}><button className="btn-service">{wiki.name}</button></a>
+              <h5>{wiki.description}</h5>
+            </div>
+        })}
+        </div>
       </div>
+      <div className="jumbotron">
+        <h2>Our Free Apps</h2><br></br>
+        <div className="row">
+        {appList.map(app => {
+          return <div key={app.id} className="col-lg-4 col-md-6 col-sm-12 text-center">
+              <Image src={app.imgUrl} /><br></br>
+              <a href={app.link}><button className="btn-service">{app.name}</button></a>
+              <h5>{app.description}</h5>
+            </div>
+        })}
+        </div>
+      </div>
+
       <div className="jumbotron">
         <h3>We will be adding more and more stuffs! Make sure to stay around and follow our Facebook and LinkedIn pages</h3>
         <div>

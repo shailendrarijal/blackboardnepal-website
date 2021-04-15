@@ -54,17 +54,17 @@ export default function Navbars() {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="ml-auto">
-                  <NavDropdown title="Services" id="basic-nav-dropdown">
+                  <NavDropdown title="Free Apps" id="basic-nav-dropdown">
                     <NavDropdown.Item href="/naati">NAATI</NavDropdown.Item>
                     <NavDropdown.Item href="/calculator">Calculator</NavDropdown.Item>
                     <NavDropdown.Item href="/nepaliwords">Nepali Words</NavDropdown.Item>
                     <NavDropdown.Item href="/englishwords">English Words</NavDropdown.Item>
                   </NavDropdown>
-                  {/* <NavDropdown title="Wiki" id="basic-nav-dropdown">
-                    <NavDropdown.Item href="/traditions" disabled>Traditions</NavDropdown.Item>
-                    <NavDropdown.Item href="/places" disabled>Places</NavDropdown.Item>
-                    <NavDropdown.Item href="/cuisine" disabled>Food and Drinks</NavDropdown.Item>
-                  </NavDropdown> */}
+                  <NavDropdown title="Wiki" id="basic-nav-dropdown">
+                    <NavDropdown.Item href="/wiki/traditions">Traditions</NavDropdown.Item>
+                    <NavDropdown.Item href="/wiki/places">Places</NavDropdown.Item>
+                    <NavDropdown.Item href="/wiki/cuisines">Food and Drinks</NavDropdown.Item>
+                  </NavDropdown>
             
             <NavDropdown title="EduBlog" id="basic-nav-dropdown">
               <NavDropdown.Item href="/edublog/browsearticles" >Browse Articles</NavDropdown.Item>
