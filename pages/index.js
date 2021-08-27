@@ -7,8 +7,25 @@ import wikiList from '../lib/wikiList';
 import appList from '../lib/appList';
 import Image from 'react-bootstrap/Image';
 import Head from 'next/head';
+import CardForHomePage from '../components/CardForHomePage/CardForHomePage';
+import { Paper } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+  homePagePaper: {
+    margin: '20px auto',
+    padding: '20px',
+    width: '100%',
+  },
+  homePageCardContainer: {
+    display: 'flex',
+    columnGap: '20px',
+  }
+});
 
 export default function Index() {
+  const classes = useStyles();
+
   const auth = useAuth();
   const isLoggedIn = auth.userId? true: false;
 
@@ -41,44 +58,54 @@ export default function Index() {
         </div>
       }
     </div>
-      <div className="jumbotron">
-        <h2>What do we currently have?</h2><br></br>
-        <div className="row">
-        {services.map(service => {
-          return <div key={service.id} className="col-lg-4 col-md-6 col-sm-12 text-center">
-              <Image src={service.imgUrl} /><br></br>
-              <a href={service.link}><button className="btn-service">{service.name}</button></a>
-              <h5>{service.description}</h5>
-            </div>
-        })}
-        </div>
-      </div>
-      <hr></hr>
-     
-      <div className="jumbotron">
-        <h2>Inside Wiki</h2><br></br>
-        <div className="row">
-        {wikiList.map(wiki => {
-          return <div key={wiki.id} className="col-lg-4 col-md-6 col-sm-12 text-center">
-              <Image src={wiki.imgUrl} /><br></br>
-              <a href={wiki.link}><button className="btn-service">{wiki.name}</button></a>
-              <h5>{wiki.description}</h5>
-            </div>
-        })}
-        </div>
-      </div>
-      <div className="jumbotron">
-        <h2>Our Free Apps</h2><br></br>
-        <div className="row">
-        {appList.map(app => {
-          return <div key={app.id} className="col-lg-4 col-md-6 col-sm-12 text-center">
-              <Image src={app.imgUrl} /><br></br>
-              <a href={app.link}><button className="btn-service">{app.name}</button></a>
-              <h5>{app.description}</h5>
-            </div>
-        })}
-        </div>
-      </div>
+          
+      <Paper elevation={3} className={classes.homePagePaper}>
+          <h2>What do we currently have?</h2>
+          <div className={classes.homePageCardContainer}>
+          {services.map(service => {
+            return (
+              <CardForHomePage 
+                key={service.id}
+                name={service.name}
+                description={service.description}
+                link={service.link}
+              />
+            )
+          })}
+          </div>
+        </Paper>
+
+        <Paper elevation={3} className={classes.homePagePaper}>
+          <h2>Inside Wiki</h2>
+          <div className={classes.homePageCardContainer}>
+          {wikiList.map(wiki => {
+            return (
+              <CardForHomePage 
+                key={wiki.id}
+                name={wiki.name}
+                description={wiki.description}
+                link={wiki.link}
+              />
+            )
+          })}
+          </div>
+        </Paper>
+
+      <Paper elevation={3} className={classes.homePagePaper}>
+          <h2>Our Free Apps</h2>
+          <div className={classes.homePageCardContainer}>
+          {appList.map(app => {
+            return (
+              <CardForHomePage 
+                key={app.id}
+                name={app.name}
+                description={app.description}
+                link={app.link}
+              />
+            )
+          })}
+          </div>
+        </Paper>
 
       <div className="jumbotron">
         <h3>We will be adding more and more stuffs! Make sure to stay around and follow our Facebook and LinkedIn pages</h3>
@@ -98,6 +125,15 @@ export default function Index() {
           color: white;
           background-color: #0F52BA;
           margin-bottom: 1rem;
+        }
+        .home-page-paper{
+          margin: auto;
+          padding: 20px;
+          
+        }
+        .home-page-card-container{
+          display: flex;
+          column-gap: 20px;
         }
       `}</style>
   </div>

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import  Link  from 'next/link';
 import { useEffect, useState } from 'react';
 import { Form, Button, Card } from 'react-bootstrap';
-// import queryString from 'query-string';
+import queryString from 'query-string';
 
 
 

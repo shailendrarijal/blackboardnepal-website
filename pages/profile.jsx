@@ -17,6 +17,7 @@ export default function Profile() {
     const [isEditable, setIsEditable] = useState(false);
 
     const [saveButtonEnabled, setSaveButtonEnabled] = useState(false);
+    const [showPasswordResetText, setShowPasswordResetText] = useState(false);
 
     const [profileInfo, setProfileInfo] = useState({
         username: '',
@@ -91,6 +92,11 @@ export default function Profile() {
         user.getUserData();
     }
 
+    const handleChangePassword = () => {
+        setTimeout(setShowPasswordResetText(true), 10000);
+        auth.sendPasswordResetEmail();
+    }
+
     
     return (
         <div>
@@ -124,9 +130,12 @@ export default function Profile() {
                             <Form.Control type="text" name="country" placeholder="Enter country" disabled={!isEditable } value={ profileInfo.country} onChange={onInputChange}/>
                         </Form.Group>
 
-                        <Button variant="warning" href="/reset">
+                        <Button type='button' variant="warning" onClick={()=>handleChangePassword()}>
                             Change Password
                         </Button><br />
+                        {showPasswordResetText && (
+                            <Form.Text>We have sent you an email with password reset link. Please follow that link to reset your password</Form.Text>
+                        )}
                         
                         {isContributor &&
                             <div>
